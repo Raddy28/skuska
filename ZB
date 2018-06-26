@@ -1,0 +1,226 @@
+#include <stdio.h>
+
+int main()
+{
+  float x, sum=0;
+   do {
+	scanf("%f",&x);
+	sum+= x;
+
+       }while ( sum<=10);
+
+  sum-= x;
+  printf("%.2f",sum);
+
+  return 0;
+}
+
+--------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+
+#define MAX 20  
+
+
+/*NACITA MATICU*/
+void NacitajMaticu(int r, int s, int A[MAX][MAX])
+{
+	int i, j;
+	for(i=0; i<r; i++)
+			for(j=0; j<s; j++)
+				scanf("%d", &A[i][j]);
+}
+
+/*VYPISE MATICU*/
+void VypisMaticu(int r, int s, int A[MAX][MAX])
+{
+	int i, j;
+	for(i=0; i<r; i++)
+	{ 
+		for(j=0; j<s; j++)
+				printf("%5d", A[i][j]);
+		printf("\n");
+  }
+}
+
+/*Vypocet Parnych prvkov vacsich ako priemer*/
+void parne_prv_pod_dia_vacsie_ako_priemer(int r, int s, int A[MAX][MAX], int parne_prv_pod_dia_f[MAX], 
+	int *p_pocet_parnych_prvkov_f, double *p_priemer_f, int parne_prv_pod_dia_vacsie_ako_priem_f[MAX],
+	int *p_pocet_parn_vacsi_ako_priem_f){
+
+
+	int i, j, k = 0, sum=0, pocet = 0, p_pocet_parn_vacsi_ako_priem = 0;
+	double priemer = 0;
+
+
+	for (i = 0; i<r; i++)
+		for (j = 0; j<s; j++)
+			if (i > j){
+		if (A[i][j] % 2 == 0){
+			parne_prv_pod_dia_f[k] = A[i][j];
+			sum += A[i][j];
+			k++; pocet++;
+		}
+			}
+	priemer = sum / (double)pocet;
+	*p_priemer_f = priemer;
+
+	k = 0;
+	for (i = 0; i<pocet; i++){
+		if (parne_prv_pod_dia_f[i]>priemer){
+			parne_prv_pod_dia_vacsie_ako_priem_f[k++] = parne_prv_pod_dia_f[i];
+			p_pocet_parn_vacsi_ako_priem++;
+		}
+	}
+
+	*p_pocet_parnych_prvkov_f = pocet;
+	*p_pocet_parn_vacsi_ako_priem_f = p_pocet_parn_vacsi_ako_priem;
+
+}
+
+
+
+int main()
+{
+	int riadok, stlpec, A[MAX][MAX], parne_prv_pod_dia_f[MAX], parne_prv_pod_dia_vacsie_ako_priem_f[MAX];
+	int i, j, k = 0;
+	int *p_pocet_parnych_prvkov, *p_pocet_parn_vacsi_ako_priem;
+	double *p_priemer;
+
+	int p_pocet_parnych_prvkov_f = 0, p_pocet_parn_vacsi_ako_priem_f = 0;
+	double p_priemer_f = 0;
+
+	p_pocet_parnych_prvkov = &p_pocet_parnych_prvkov_f;
+	p_pocet_parn_vacsi_ako_priem = &p_pocet_parn_vacsi_ako_priem_f;
+	p_priemer = &p_priemer_f;
+
+
+
+	scanf("%d %d", &riadok, &stlpec);
+	NacitajMaticu(riadok, stlpec, A);
+
+	printf("Matica A:\n");
+	VypisMaticu(riadok, stlpec, A);
+
+	parne_prv_pod_dia_vacsie_ako_priemer(riadok, stlpec, A, parne_prv_pod_dia_f, p_pocet_parnych_prvkov, p_priemer,
+		parne_prv_pod_dia_vacsie_ako_priem_f, p_pocet_parn_vacsi_ako_priem);
+
+	printf("\n Parne prvky pod diagonalou: ");
+	for (i = 0; i<p_pocet_parnych_prvkov_f; i++)
+		printf("%d ", parne_prv_pod_dia_f[i]);
+	printf("\n Pocet parnych prvkov pod hlavnou diagonalou matice A je: %d", p_pocet_parnych_prvkov_f);
+	printf("\n Priemer parnych prvkov pod hlavnou diagonalou matice A je: %.2f", p_priemer_f);
+	printf("\n Parne prvky pod hlavnou diagonalou matice vacsie ako je priemer: %d \n ", parne_prv_pod_dia_vacsie_ako_priem_f[k]);
+	return 0;
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <math.h>
+
+
+struct CPLX{
+	double Re;
+	double Im;
+};
+
+struct CPLX add(struct CPLX x,struct CPLX y){
+struct CPLX z;
+	c.Im = x.Im + y.Im;
+	c.Re = x.Re + y.Re;
+	return z;
+}
+struct CPLX sub(struct CPLX x,struct CPLX y){
+struct CPLX z;
+	c.Im = x.Im - y.Im;
+	c.Re = x.Re - y.Re;
+	return z;
+}
+
+struct CPLX mult(struct CPLX x,struct CPLX y){
+struct CPLX z;
+	c.Im = x.Re * y.Im - x.Im * y.Re;
+	c.Re = x.Re * y.Re - x.Im * y.Im;
+	return z;
+}
+struct CPLX divis(struct CPLX x,struct CPLX y){
+struct CPLX z;
+	c.Re = (x.Re*y.Re + x.Im *y.Im)/(y.Re*y.Re+y.Im*y.Im);
+	c.Im = (x.Im*y.Re - y.Re*x.Im)/(y.Re*y.Re+y.Im*y.Im);
+	return z;
+}
+
+double complex_n_modul(struct CPLX x){
+	if(x.Im <0)return abs(x.Im);
+	return x.Im;
+}
+
+int main(){
+	struct CPLX a,b,c,konecnahod,konecnahod2;
+	struct CPLX *pa,*pb,*pc;
+	int subor,riadky=1;
+	int i,j,k,nep;
+	char krokc1, krokc2;
+	FILE *in;
+
+	double re1,re2,re3,im1,im2,im3;
+
+	pa=&a;
+	pb=&b;
+	pc=&c;
+
+	in = fopen("vstup.txt","r");
+	if(in==NULL){
+		printf("nepodarilo sa otvorit 1");
+		return 1;
+	}
+	while((subor=getc(in)) !=EOF){
+		if(subor == '\n')riadky++;
+	}
+	
+	in = fopen("vstup.txt","r");
+	if(in==NULL){
+		printf("nepodarilo sa otvorit 2");
+		return 1;
+	}
+	for(i=0;i<riadky;i++){
+	//fscanf(in,"%lf %c %c%lf %c %lf %c %c%lf %c %lf %c %c%lf",a.Re,&nep,&nep,a.Im,&krokc1,b.Re,&nep,&nep,b.Im,&krokc2,c.Re,&nep,&nep,c.Im);
+		fscanf(in,"%lf %c %c%lf %c %lf %c %c%lf %c %lf %c %c%lf",&re1,&nep,&nep,&im1,&krokc1,&re2,&nep,&nep,&im2,&krokc2,&re3,&nep,&nep,&im3);
+		a.Im=im1;a.Re=re1;
+		b.Im=im2;b.Re=re2;
+		c.Im=im3;c.Re=re3;
+
+		if(krokc1 == '+')konecnahod = add(a,b);
+		if(krokc1 == '-')konecnahod = sub(a,b);
+		if(krokc1 == '*')konecnahod = mult(a,b);
+		if(krokc1 == '/')konecnahod = divis(a,b);
+		
+	
+		
+		if(krokc2 == '+')konecnahod2 = add(konecnahod,c);
+		if(krokc2 == '-')konecnahod2 = sub(konecnahod,c);
+		if(krokc2 == '*')konecnahod2 = mult(konecnahod,c);
+		if(krokc2 == '/')konecnahod2 = divis(konecnahod,c);
+		printf("(%lf + i%lf) %c (%lf + i%lf) %c (%lf + i%lf) = ",a.Re,a.Im,krokc1,b.Re,b.Im,krokc2,c.Re,c.Im);
+		printf("%lf+ i%lf\n",konecnahod2.Re,konecnahod2.Im);
+		printf("modul: %lf\n",sqrt(konecnahod2.Re*konecnahod2.Re+konecnahod2.Im*konecnahod2.Im));
+}
+
+
+	printf("riadky: %d",riadky);
+	pa=&a;
+	pb=&b;
+	pc=&c;
+	
+	
+
+    
+
+
+
+
+    return 0;
+}
+
+
